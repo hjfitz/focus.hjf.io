@@ -1,76 +1,116 @@
 document.addEventListener("DOMContentLoaded", main);
 
-function main() {
-  const musicIn = document.getElementById("yt-in");
-  const pomoStart = document.getElementById("btn-pomo");
-  musicIn.addEventListener("keyup", setPlayingVideo);
-  pomoStart.addEventListener("click", startPomo);
-}
-
-let curTimeout;
-function startPomo(ev) {
-  const timeInput = document.getElementById("pomo-time");
-  ev.preventDefault();
-  const time = parseInt(timeInput.value, 10);
-  console.log(time, timeInput);
-  if (Number.isNaN(time)) {
-    return;
+class FocusController {
+  constructor() {
+    this.musicPlayer = new MusicPlayer();
+    this.pomo = new Pomo(this.musicPlayer);
   }
-  console.log("starting pomo");
-  if (curTimeout) {
-    clearTimeout(curTimeout);
-    curTimeout = null;
+}
+
+class MusicPlayer {
+  constructor() {
+    this.setPlayingVideo = this.setPlayingVideo.bind(this);
+    this.pauseVideo = this.pauseVideo.bind(this);
+    this.playVideo = this.playVideo.bind(this);
+    this.ytPlayer = null;
+    this.addEventListeners();
   }
-  const fullTime = time * 1e3 * 60;
-  console.log("full time: ", { fullTime });
-  curTimeout = setTimeout(() => {
-    console.log("timer up");
-    const utterance = new SpeechSynthesisUtterance("Pomo timer is up");
-    speechSynthesis.speak(utterance);
-  }, fullTime);
-}
 
-function startVideo(videoId) {
-  const player = new YT.Player("yt-in", {
-    videoId,
-    height: "390",
-    width: "640",
-    playerVars: {
-      playsinline: 1,
-    },
-    events: {
-      onReady: (e) => {
-        e.target.playVideo(),
-          setTimeout(() => {
-            document
-              .querySelectorAll("iframe")
-              .forEach((frame) => (frame.style.display = "none"));
-          }, 550);
-      },
-      onStateChange: (e) => {
-        console.log(e);
-        if (e.data === 0) {
-          e.target.playVideo();
-        }
-      },
-    },
-  });
-  console.log(player);
-}
+  addEventListeners() {
+    const musicIn = document.getElementById("yt-in");
+    const pauseButton = document.getElementById("pause-video");
+    const playButton = document.getElementById("play-video");
+    const allMusicLinks = document.querySelectorAll("[data-video-id]");
+    musicIn.addEventListener("keyup", this.setPlayingVideo);
+    pauseButton.addEventListener("click", this.pauseVideo);
+    playButton.addEventListener("click", this.playVideo);
+    allMusicLinks.forEach((soundtrack) => {
+      const trackId = soundtrack.dataset.videoId;
+      soundtrack.addEventListener("click", () => this.startVideo(trackId));
+    });
+  }
 
-function setPlayingVideo(ev) {
-  ev.preventDefault();
-  if (ev.key !== "Enter") return;
-  const vid = ev.target.value;
-  try {
-    const url = new URL(vid);
-    const vidId = url.searchParams.get("v");
-    if (!vidId) {
-      console.log("not found");
-      return;
+  playVideo() {
+    if (!this.ytPlayer) return;
+    this.ytPlayer.playVideo();
+  }
+
+  pauseVideo() {
+    if (!this.ytPlayer) return;
+    this.ytPlayer.pauseVideo();
+  }
+
+  setPlayingVideo(ev) {
+    ev.preventDefault();
+    if (ev.key !== "Enter") return;
+    const vid = ev.target.value;
+    try {
+      const url = new URL(vid);
+      const vidId = url.searchParams.get("v");
+      if (!vidId) {
+        console.log("not found");
+        return;
+      }
+      this.startVideo(vidId);
+    } catch (err) {
+      console.error(err);
+      console.log("fucky wucky");
+    } finally {
+      ev.target.value = "";
+      ev.target.blur();
     }
-    startVideo(vidId);
-  } catch {
-    console.log("fucky wucky");
   }
+
+  startVideo(videoId) {
+    this.ytPlayer = new YT.Player("yt-repeat", {
+      videoId,
+      playerVars: {
+        autoplay: 1,
+        playsinline: 1,
+        loop: 1,
+      },
+    });
+  }
+}
+
+class Pomo {
+  constructor(musicPlayer) {
+    this.musicPlayer = musicPlayer;
+    this.curTimeout = null;
+    this.timeInput = document.getElementById("pomo-time");
+    this.pomoBtn = document.getElementById("btn-pomo");
+    this.pomoBtn.addEventListener("click", this.startPomo);
+  }
+
+  startPomo(ev) {
+    ev.preventDefault();
+    if (this.curTimeout) {
+      clearTimeout(this.curTimeout);
+      this.curTimeout = null;
+    }
+    const fullTime = this.getTime();
+    if (!fullTime) return;
+    this.curTimeout = setTimeout(this.endPomo, fullTime);
+  }
+
+  getTime() {
+    const time = parseInt(this.timeInput.value, 10);
+    if (Number.isNaN(time)) return;
+    const fullTime = time * 1e3 * 60;
+    return fullTime;
+  }
+
+  endPomo() {
+    console.log(this.musicPlayer.ytPlayer);
+    this.musicPlayer.ytPlayer.pauseVideo();
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance("Pomo timer is up");
+      speechSynthesis.speak(utterance);
+    }, 100);
+  }
+}
+
+function main() {
+  const app = new FocusController();
+  window.app = app;
 }

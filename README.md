@@ -18,5 +18,7 @@ This uses no build-tools (once I've removed them). Open `index.html` in your bro
 ## Features
 
 - Repeats a video innit
-- Soon: 25 minute pomo timer
+- 25 minute pomo timer
 - Soon: click a link to start playing (should add data-url to li tags)
+- Soon: Show running timer on the page
+- Soon: Pause music at end of pomo
