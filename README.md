@@ -21,4 +21,5 @@ This uses no build-tools (once I've removed them). Open `index.html` in your bro
 - 25 minute pomo timer
 - Click a link to start playing (should add data-url to li tags)
 - Pause music at end of pomo
-- Soon: Show running timer on the page
+- Show running timer on the page
+- Soon: styling
