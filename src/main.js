@@ -36,7 +36,7 @@ class MusicPlayer {
   }
 
   pauseVideo() {
-    if (!this.ytPlayer) return;
+    if (this.ytPlayer === null) return;
     this.ytPlayer.pauseVideo();
   }
 
@@ -115,8 +115,7 @@ class Pomo {
   }
 
   endPomo() {
-    console.log(this.musicPlayer.ytPlayer);
-    this.musicPlayer.ytPlayer.pauseVideo();
+    this.musicPlayer?.ytPlayer?.pauseVideo();
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance("Pomo timer is up");
       speechSynthesis.speak(utterance);

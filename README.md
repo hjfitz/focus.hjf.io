@@ -22,4 +22,6 @@ This uses no build-tools (once I've removed them). Open `index.html` in your bro
 - Click a link to start playing (should add data-url to li tags)
 - Pause music at end of pomo
 - Show running timer on the page
+- Soon: Spotify playlist integration
 - Soon: styling
+- Soon: volume
