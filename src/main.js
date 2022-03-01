@@ -62,6 +62,10 @@ class MusicPlayer {
   }
 
   startVideo(videoId) {
+    if (this.ytPlayer) {
+      this.ytPlayer.loadVideoById(videoId);
+      return;
+    }
     this.ytPlayer = new YT.Player("yt-repeat", {
       videoId,
       playerVars: {
