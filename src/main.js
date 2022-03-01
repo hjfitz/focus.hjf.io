@@ -1,8 +1,33 @@
 document.addEventListener("DOMContentLoaded", main);
 
 function main() {
-  const inp = document.getElementById("yt-in");
-  inp.addEventListener("keyup", setPlayingVideo);
+  const musicIn = document.getElementById("yt-in");
+  const pomoStart = document.getElementById("btn-pomo");
+  musicIn.addEventListener("keyup", setPlayingVideo);
+  pomoStart.addEventListener("click", startPomo);
+}
+
+let curTimeout;
+function startPomo(ev) {
+  const timeInput = document.getElementById("pomo-time");
+  ev.preventDefault();
+  const time = parseInt(timeInput.value, 10);
+  console.log(time, timeInput);
+  if (Number.isNaN(time)) {
+    return;
+  }
+  console.log("starting pomo");
+  if (curTimeout) {
+    clearTimeout(curTimeout);
+    curTimeout = null;
+  }
+  const fullTime = time * 1e3 * 60;
+  console.log("full time: ", { fullTime });
+  curTimeout = setTimeout(() => {
+    console.log("timer up");
+    const utterance = new SpeechSynthesisUtterance("Pomo timer is up");
+    speechSynthesis.speak(utterance);
+  }, fullTime);
 }
 
 function startVideo(videoId) {
