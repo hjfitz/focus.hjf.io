@@ -29,7 +29,7 @@ export default class Pomo {
       const timestamp = `Remaining: ${diffInMinutes} minutes`;
       this.timeRemainingElem.textContent = timestamp;
     }, 1e3);
-    this.curTimeout = setTimeout(this.endPomo, fullTime);
+    this.curTimeout = setTimeout(this.endPomo.bind(this), fullTime);
   }
 
   getTime() {
@@ -45,5 +45,6 @@ export default class Pomo {
       const utterance = new SpeechSynthesisUtterance("Pomo timer is up");
       speechSynthesis.speak(utterance);
     }, 100);
+    this.timeRemainingElem.textContent = "Pomo timer complete!";
   }
 }
