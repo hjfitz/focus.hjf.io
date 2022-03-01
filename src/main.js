@@ -1,9 +1,10 @@
-import Pomo from "./pomo.class.js";
-import MusicPlayer from "./musicPlayer.class.js";
+import Pomo from "./pomo.js";
+import YoutubePlayer from "./youtubePlayer.js";
 
 class FocusController {
   constructor() {
-    this.musicPlayer = new MusicPlayer();
+    // eventually we can check for a spotify login and use that instead
+    this.musicPlayer = new YoutubePlayer();
     this.pomo = new Pomo(this.musicPlayer);
   }
 }

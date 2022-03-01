@@ -40,7 +40,7 @@ export default class Pomo {
   }
 
   endPomo() {
-    this.musicPlayer?.ytPlayer?.pauseVideo();
+    this.musicPlayer.pauseVideo();
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance("Pomo timer is up");
       speechSynthesis.speak(utterance);
