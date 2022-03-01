@@ -69,6 +69,12 @@ class MusicPlayer {
         playsinline: 1,
         loop: 1,
       },
+      events: {
+        onStateChange: (e) => {
+          if (e.data !== 0) return;
+          e.target.playVideo();
+        },
+      },
     });
   }
 }
