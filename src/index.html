@@ -8,22 +8,25 @@
     <title>YouTube Repeater</title>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script type="module" defer src="./main.js"></script>
+
+	<link rel="stylesheet" href="https://unpkg.com/turretcss/dist/turretcss.min.css" crossorigin="anonymous">
+
   </head>
 
-  <body>
-	  <main>
+  <body class="background-dark-700 color-light-200">
+	  <main class="container max-width-l padding-top-m">
         <section>
           <h1>Music</h1>
           <ul>
-            <li role="button" data-video-id="_WTb8xl7dXU">Witcher 3 Dialog Music: https://www.youtube.com/watch?v=_WTb8xl7dXU</li>
-            <li role="button" data-video-id="CahOLfYxiq0">Lord of the Rings Ambience: https://www.youtube.com/watch?v=CahOLfYxiq0</li>
-            <li role="button" data-video-id="8GYL6c_GTE0">Witcher 3 Chilled: https://www.youtube.com/watch?v=8GYL6c_GTE0</li>
-            <li role="button" data-video-id="I9MsChR2k0I">Halo Ambience: https://www.youtube.com/watch?v=I9MsChR2k0I</li>
-            <li role="button" data-video-id="GdzrrWA8e7A">Zelda and Chill: https://www.youtube.com/watch?v=GdzrrWA8e7A</li>
-            <li role="button" data-video-id="p5-HxSBO4gU">Planet Coaster OST: https://www.youtube.com/watch?v=p5-HxSBO4gU</li>
-            <li role="button" data-video-id="jX6kn9_U8qk">Rain: https://www.youtube.com/watch?v=jX6kn9_U8qk</li>
+            <li role="button" data-video-id="_WTb8xl7dXU">Witcher 3 Dialog Music</li>
+			<li role="button" data-video-id="CahOLfYxiq0">Lord of the Rings Ambience</li>
+			<li role="button" data-video-id="8GYL6c_GTE0">Witcher 3 Chilled</li>
+			<li role="button" data-video-id="I9MsChR2k0I">Halo Ambience</li>
+			<li role="button" data-video-id="GdzrrWA8e7A">Zelda and Chill</li>
+			<li role="button" data-video-id="p5-HxSBO4gU">Planet Coaster OST</li>
+			<!--<li role="button" data-video-id="jX6kn9_U8qk">Rain: https://www.youtube.com/watch?v=jX6kn9_U8qk</li>-->
           </ul>
-		  <input type="text" id="yt-in" />
+		  <input type="text" id="yt-in" class="background-dark-500" />
           <div style="display: none;" class="yt-repeat-parent">
             <div id="yt-repeat"></div>
           </div>
@@ -32,7 +35,7 @@
         </section>
         <section>
           <h1>Pomo Timer</h1>
-          <input type="number" id="pomo-time" value="25" />
+          <input type="number" id="pomo-time" value="25" class="background-dark-500" />
           <a role="button" href="#" id="btn-pomo">Start Pomo</a>
           <a role="button" href="#" id="btn-pomo-end">End Pomo</a>
           <div id="time-remaining"></div>
