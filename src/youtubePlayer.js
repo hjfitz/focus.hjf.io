@@ -1,5 +1,6 @@
 export default class MusicPlayer {
-  constructor() {
+  constructor(elements) {
+	this.elements = elements
     this.setPlayingVideo = this.setPlayingVideo.bind(this);
     this.pauseVideo = this.pauseVideo.bind(this);
     this.playVideo = this.playVideo.bind(this);
@@ -8,14 +9,10 @@ export default class MusicPlayer {
   }
 
   addEventListeners() {
-    const musicIn = document.getElementById("yt-in");
-    const pauseButton = document.getElementById("pause-video");
-    const playButton = document.getElementById("play-video");
-    const allMusicLinks = document.querySelectorAll("[data-video-id]");
-    musicIn.addEventListener("keyup", this.setPlayingVideo);
-    pauseButton.addEventListener("click", this.pauseVideo);
-    playButton.addEventListener("click", this.playVideo);
-    allMusicLinks.forEach((soundtrack) => {
+    this.elements.musicInput.addEventListener("keyup", this.setPlayingVideo);
+    this.elements.pauseButton.addEventListener("click", this.pauseVideo);
+    this.elements.playButton.addEventListener("click", this.playVideo);
+    this.elements.musicList.forEach((soundtrack) => {
       const trackId = soundtrack.dataset.videoId;
       soundtrack.addEventListener("click", () => this.startVideo(trackId));
     });
