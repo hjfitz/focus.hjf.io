@@ -1,5 +1,6 @@
 export default class MusicPlayer {
-  constructor(elements) {
+  constructor(elements, state) {
+	  this.state = state
 	this.elements = elements
     this.setPlayingVideo = this.setPlayingVideo.bind(this);
     this.pauseVideo = this.pauseVideo.bind(this);
@@ -14,17 +15,19 @@ export default class MusicPlayer {
     this.elements.playButton.addEventListener("click", this.playVideo);
     this.elements.musicList.forEach((soundtrack) => {
       const trackId = soundtrack.dataset.videoId;
-      soundtrack.addEventListener("click", () => this.startVideo(trackId));
+      soundtrack.addEventListener("click", () => this.startVideo(trackId, soundtrack.textContent));
     });
   }
 
   playVideo() {
     if (!this.ytPlayer) return;
+	this.state.setPlaying(true)
     this.ytPlayer.playVideo();
   }
 
   pauseVideo() {
     if (this.ytPlayer === null) return;
+	  this.state.setPlaying(false)
     this.ytPlayer.pauseVideo();
   }
 
@@ -49,7 +52,9 @@ export default class MusicPlayer {
     }
   }
 
-  startVideo(videoId) {
+  startVideo(videoId, videoTitle) {
+	  this.state.setTrack(videoTitle)
+	  this.state.setPlaying(true)
     if (this.ytPlayer) {
       this.ytPlayer.loadVideoById(videoId);
       return;
